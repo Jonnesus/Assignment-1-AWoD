@@ -5,6 +5,7 @@ public class PlayerOutcomesEDIT : MonoBehaviour
 {
     [SerializeField] private GameObject deathPanel;
     [SerializeField] private GameObject portalPanel;
+    [SerializeField] private LayerMask deathLayer;
 
     private bool gameFreeze = false;
 
@@ -13,14 +14,14 @@ public class PlayerOutcomesEDIT : MonoBehaviour
 
     private void Update()
     {
-        if (gameFreeze == true && Input.GetKeyDown(KeyCode.R))
+        if (gameFreeze == true && Input.GetButtonDown("Submit"))
         {
             SceneManager.LoadScene(playScene);
             deathPanel.SetActive(false);
             gameFreeze= false;
             Time.timeScale = 1f;
         }
-        else if (gameFreeze == true && Input.GetKeyDown(KeyCode.Return))
+        else if (gameFreeze == true && Input.GetButtonDown("Cancel"))
         {
             SceneManager.LoadScene(mainMenuScene);
             deathPanel.SetActive(false);
@@ -31,10 +32,11 @@ public class PlayerOutcomesEDIT : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("DeathObject"))
+        if (collision.gameObject.tag == "DeathObject")
         {
+            Debug.Log("Death");
             Time.timeScale = 0f;
             deathPanel.SetActive(true);
             gameFreeze= true;
